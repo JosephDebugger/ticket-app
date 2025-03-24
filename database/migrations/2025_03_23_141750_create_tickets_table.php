@@ -12,8 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tickets', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->primary()->autoIncrement();
+            $table->integer('user_id');
+            $table->string('subject')->nullable();
+            $table->text('description')->nullable();
+            $table->enum('category', ['Technical', 'Billing', 'General'])->nullable();
+            $table->enum('priority', ['Low', 'Medium', 'High'])->nullable();
+            $table->enum('status', ['Open', 'In Progress', 'Resolved', 'Closed'])->nullable();
+            $table->string('attachment_path')->nullable();
             $table->timestamps();
+     
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

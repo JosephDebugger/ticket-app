@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('messages', function (Blueprint $table) {
-            $table->id();
-            $table->integer('chat_id');
-            $table->integer('user_id');
-            $table->text('content')->nullable();
-            $table->timestamps();
-    
-            $table->foreign('chat_id')->references('id')->on('chats');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('id')->primary()->autoIncrement();
+        $table->integer('chat_id');
+        $table->integer('user_id');
+        $table->text('content')->nullable();
+        $table->timestamps();
+
+        $table->foreign('chat_id')->references('id')->on('chats');
+        $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
