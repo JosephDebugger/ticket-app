@@ -13,6 +13,12 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\ChatResource;
 use Inertia\Inertia;
+use App\Events\NewMessage;
+use App\Models\Chat;
+use App\Http\Requests\StoreMessageRequest;
+use App\Http\Resources\MessageResource;
+use App\Http\Requests\UpdateTicketRequest;
+
 
 class TicketController extends Controller
 {
@@ -21,14 +27,9 @@ class TicketController extends Controller
         $tickets = Ticket::query()
             ->when(auth()->check() && auth()->user()->isCustomer(), fn($query) => $query->where('user_id', auth()->id()))
             ->with(['user', 'comments'])
-            ->latest()->get();
-        // ->paginate(10);
-
-        //return response()->json($tickets);
-
-        // return Inertia::render('Tickets/Show', [
-        //     'ticket' => new TicketResource($tickets)
-        // ]);
+            ->latest()
+            ->paginate(10);
+    
         return Inertia::render('Tickets/Index', [
             'tickets' => TicketResource::collection($tickets),
             'statuses' => ['Open', 'In Progress', 'Resolved', 'Closed'], // For filters
@@ -59,6 +60,7 @@ class TicketController extends Controller
         }
         return Inertia::render('Tickets/Index', ['success' => 'Ticket created successfully']);
     }
+    
     public function show(Ticket $ticket)
     {
         $this->authorize('view', $ticket);
@@ -82,7 +84,8 @@ class TicketController extends Controller
     {
         $this->authorize('delete', $ticket);
         $ticket->delete();
-        return response()->json(null, 204);
+        return Inertia::render('Tickets/Index', ['success' => 'Ticket deleted successfully']);
+      
     }
 
     public function updateStatus(Ticket $ticket, Request $request): TicketResource

@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ChatController;
 
 
+
 Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
