@@ -13,51 +13,39 @@ Route::get('/', function () {
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth:sanctum'])->name('dashboard');
 
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
+    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+});
+Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
 
+Route::get('/attachments/{filename}', [TicketController::class, 'downloadAttachment'])->name('attachments.download');
 
+Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
 
-Route::get('/tickets', [TicketController::class, 'index'])
-    ->name('tickets.index');
+Route::get('/tickets/{ticket}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
 
-Route::get('/attachments/{filename}', [TicketController::class, 'downloadAttachment'])
-    ->name('attachments.download');
+Route::put('/tickets/{ticket}', [TicketController::class, 'update'])->name('tickets.update');
 
-    Route::get('/tickets/create', [TicketController::class, 'create'])
-    ->name('tickets.create');
+Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy');
 
-Route::post('/tickets', [TicketController::class, 'store'])
-    ->name('tickets.store');
+Route::post('/tickets/{ticket}/comments', [CommentController::class, 'store'])->name('comments.store');
 
-Route::get('/tickets/{ticket}', [TicketController::class, 'show'])
-    ->name('tickets.show');
+Route::get('/tickets/{ticket}/chat', [ChatController::class, 'show'])->name('chats.show');
 
-Route::get('/tickets/{ticket}/edit', [TicketController::class, 'edit'])
-    ->name('tickets.edit');
+Route::post('/tickets/{ticket}/chat/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');
 
-Route::put('/tickets/{ticket}', [TicketController::class, 'update'])
-    ->name('tickets.update');
+Route::get('/attachments/{filename}', [TicketController::class, 'downloadAttachment'])->name('attachments.download');
 
-Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])
-    ->name('tickets.destroy');
-
-// Comments
-Route::post('/tickets/{ticket}/comments', [CommentController::class, 'store'])
-    ->name('comments.store');
-
-// Chats
 Route::get('/tickets/{ticket}/chat', [ChatController::class, 'show'])
-    ->name('chats.show');
+->name('tickets.chat')
+->where('ticket', '[0-9]+');
 
-Route::post('/tickets/{ticket}/chat/messages', [ChatController::class, 'sendMessage'])
-    ->name('chats.sendMessage');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('/tickets/{ticket}/chat/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');
+});
 
-// File Downloads
-Route::get('/attachments/{filename}', [TicketController::class, 'downloadAttachment'])
-    ->name('attachments.download');
-
-
-
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';

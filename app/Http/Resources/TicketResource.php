@@ -18,6 +18,8 @@ class TicketResource extends JsonResource
             'id' => $this->id,
             'subject' => $this->subject,
             'status' => $this->status,
+            'category' => $this->category,
+            'priority' => $this->priority,
             'comments' => CommentResource::collection($this->comments),
             'chat' => new ChatResource($this->chat)
         ];

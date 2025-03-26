@@ -6,6 +6,8 @@ import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 import { initializeTheme } from './composables/useAppearance';
+import Pusher from 'pusher-js';
+
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {

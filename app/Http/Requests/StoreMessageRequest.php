@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-
-class StoreTicketRequest extends FormRequest
+class StoreMessageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->isCustomer();
+        return false;
     }
 
     /**
@@ -23,11 +22,7 @@ class StoreTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subject' => 'required|string|max:255',
-            'description' => 'required|string',
-            'category' => 'required|in:Technical,Billing,General',
-            'priority' => 'required|in:Low,Medium,High',
-            'attachment' => 'nullable|file|max:2048|mimes:jpg,png,pdf',
+            //
         ];
     }
 }

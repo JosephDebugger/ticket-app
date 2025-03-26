@@ -12,13 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chats', function (Blueprint $table) {
-            $table->integer('id')->primary()->autoIncrement();
-            $table->integer('ticket_id')->unique();
-            $table->integer('admin_id');
+            $table->id();
+            $table->foreignId('ticket_id')->constrained('tickets')->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
-    
-            $table->foreign('ticket_id')->references('id')->on('tickets');
-            $table->foreign('admin_id')->references('id')->on('users');
         });
     }
 
