@@ -79,6 +79,7 @@ const openChat = () => {
             <div class="bg-white rounded-lg shadow p-6">
                 <h2 class="text-lg font-semibold mb-4">Comments</h2>
 
+                {{ comments }}
                 <div v-for="comment in comments" :key="comment.id" class="mb-4 p-4 bg-gray-50 rounded-lg">
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center space-x-2">

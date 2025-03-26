@@ -39,9 +39,7 @@ Route::post('/tickets/{ticket}/chat/messages', [ChatController::class, 'sendMess
 
 Route::get('/attachments/{filename}', [TicketController::class, 'downloadAttachment'])->name('attachments.download');
 
-Route::get('/tickets/{ticket}/chat', [ChatController::class, 'show'])
-->name('tickets.chat')
-->where('ticket', '[0-9]+');
+Route::get('/tickets/{ticket}/chat', [ChatController::class, 'show'])->name('tickets.chat');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/tickets/{ticket}/chat/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');

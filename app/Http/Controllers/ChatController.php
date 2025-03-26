@@ -55,11 +55,12 @@ class ChatController extends Controller
             ->latest()
             ->get();
 
-        return inertia('Tickets/Chat', [
-            'ticket' => $ticket,
-            'chat' => $chat,
-            'messages' => MessageResource::collection($messages)
-        ]);
+            return response()->json($chat);
+        // return inertia('Tickets/Chat', [
+        //     'ticket' => $ticket,
+        //     'chat' => $chat,
+        //     'messages' => MessageResource::collection($messages)
+        // ]);
     }
     public function sendMessage(StoreMessageRequest $request, Chat $chat): JsonResponse
     {
